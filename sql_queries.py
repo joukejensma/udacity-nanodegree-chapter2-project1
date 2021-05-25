@@ -140,25 +140,26 @@ INSERT INTO songplays (start_time, user_id, level, song_id, artist_id, session_i
 SELECT e.ts as start_time, e.userId as user_id, e.level, s.song_id, s.artist_id, e.sessionId as session_id, e.location, e.userAgent as user_agent 
 FROM staging_events e
 JOIN staging_songs s ON (e.song = s.title)
+WHERE e.page = 'NextSong'
 """)
 
 user_table_insert = ("""
 INSERT INTO users (user_id, first_name, last_name, gender, level)
-SELECT e.userId as user_id, e.firstName as first_name, e.lastName as last_name, e.gender, e.level
+SELECT DISTINCT e.userId as user_id, e.firstName as first_name, e.lastName as last_name, e.gender, e.level
 FROM staging_events e
 WHERE e.userId IS NOT NULL
 """)
 
 song_table_insert = ("""
 INSERT INTO songs (song_id, title, artist_id, year, duration)
-SELECT s.song_id, s.title, s.artist_id, s.year, s.duration
+SELECT DISTINCT s.song_id, s.title, s.artist_id, s.year, s.duration
 FROM staging_songs s
 """)
 
 artist_table_insert = ("""
 INSERT INTO artists
 (artist_id, name, location, latitude, longitude)
-SELECT s.artist_id, s.artist_name as name, s.artist_location as location, s.artist_latitude as latitude, s.artist_longitude as longitude
+SELECT DISTINCT s.artist_id, s.artist_name as name, s.artist_location as location, s.artist_latitude as latitude, s.artist_longitude as longitude
 FROM staging_songs s
 """)
 

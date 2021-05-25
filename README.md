@@ -39,3 +39,6 @@ To COPY the data from s3 into redshift the COPY statement needs an IAM_ROLE valu
 I use the notebook supplied in chapter 2 (L3 Exercise 2 - IaC) to create the IAM role to get read access from redshift to the s3 bucket.
 The supplied string I add into dwh.cfg under IAM_ROLE, ARN: arn:aws:iam::097733154984:role/dwhRole
 
+# Fixes after review
+I edited the sql queries in sql_queries.py to better filter duplicate records.
+Furthermore I only added songplays in the songplays table where page equals NextSong.
